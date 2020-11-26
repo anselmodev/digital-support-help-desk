@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="digital-support:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>digital-support</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="digital-support-1.0-digital-support.war">
+      <element id="artifact" artifact-name="digital-support:war exploded" />
+    </root>
+  </artifact>
+</component>

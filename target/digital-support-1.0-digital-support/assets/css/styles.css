@@ -1,0 +1,196 @@
+/* GENERAL */
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Roboto';
+
+  /* Gradient Generator: https://cssgradient.io/ */
+  background: rgb(81, 86, 154);
+  background: linear-gradient(0deg, rgba(81, 86, 154, 1) 35%, rgba(164, 88, 189, 1) 100%);
+
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  overflow: hidden;
+}
+
+/* MARCA D'AGUA */
+.watermark {
+  width: 50%;
+  position: absolute;
+  right: 5%;
+  z-index: 0;
+  opacity: 0.1;
+}
+
+/* LOGIN BOX */
+.login-box {
+  min-width: 320px;
+  min-height: 330px;
+  max-width: 404px;
+  max-height: 360px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-sizing: border-box;
+
+  /* Shadow Generator:  */
+  -webkit-box-shadow: 0px 25px 65px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 25px 65px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 25px 65px 0px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.login-header {
+  width: 190px;
+  height: 110px;
+  position: absolute;
+  top: -35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-header h1 {
+  height: 20px;
+  position: relative;
+  top: -20px;
+}
+
+.login-header h1 p {
+  width: 100%;
+  text-indent: -99999px;
+  overflow: hidden;
+  display: none;
+}
+
+.login-header h1 img {
+  width: 180px;
+}
+
+.login-logo-container {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-color: white;
+  display: inline-table;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.login-logo {
+  width: 34px;
+  height: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -24px;
+  margin-left: -17px;
+}
+
+.login-box-label {
+  font-size: 14px;
+  color: #51569A;
+  font-style: italic;
+  width: 100%;
+  text-align: center;
+  margin-bottom: -20px;
+}
+
+.login-form {
+  margin-top: 50px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.login-form-group {
+  min-width: 320px;
+  margin: 25px 0;
+}
+
+.label-form {
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #51569A;
+  opacity: 0.5;
+  margin-left: 5px;
+}
+
+.login-buttons {
+  width: 100%;
+  height: auto;
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* FOOTER */
+.footer {
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  font-size: 13px;
+  color: white;
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+/* RECOVER ACCESS */
+.login-tips {
+  text-align: center;
+  font-size: 12px;
+  color: #A358BC;
+  padding: 10px;
+}
+
+/* SPINERS */
+#login-spinner {
+	visibility: hidden;
+	position: absolute;
+	bottom: 30px;
+	right: 65px;
+}
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}

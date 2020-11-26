@@ -1,0 +1,168 @@
+/* 
+  Bootstrap alteração de tema:
+  Aqui segue as linhas de css com substituição de estilos conforme o
+  tema do template
+*/
+.label-form {
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #51569A;
+  opacity: 0.5;
+  margin-left: 5px;
+}
+
+.btn {
+  border-radius: 26rem;
+  padding: .375rem 1.75rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  transition: 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.9);
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #51569A;
+  border-color: #51569A;
+}
+
+.btn-primary:hover {
+  background-color: #35397e;
+  border-color: #35397e;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #35397e;
+  border-color: #35397e;
+}
+
+.btn-primary.focus,
+.btn-primary:focus {
+  color: #fff;
+  background-color: #35397e;
+  border-color: #35397e;
+  box-shadow: 0 0 0 0.2rem rgba(53, 57, 126, 0.5);
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #A358BC;
+  border-color: #A358BC;
+}
+
+.btn-secondary:hover {
+  background-color: rgb(138, 67, 161);
+  border-color: rgb(138, 67, 161);
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+  color: #fff;
+  background-color: #A358BC;
+  border-color: #A358BC;
+}
+
+.btn-secondary.focus,
+.btn-secondary:focus {
+  color: #fff;
+  background-color: #A358BC;
+  border-color: #A358BC;
+  box-shadow: 0 0 0 0.2rem rgba(138, 67, 161, 0.5);
+}
+
+.btn-link {
+  color: #51569A;
+  padding: 0 10px;
+  line-height: 30px;
+}
+
+.btn-link:hover {
+  color: #35397e;
+}
+
+.form-control {
+  padding: .375rem .75rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid rgba(82, 86, 154, 0.3);
+  border-radius: 10.25rem;
+}
+
+.form-control::placeholder {
+  color: #707070;
+  opacity: 0.2;
+}
+
+.dropdown-item:active {
+  background-color: #35397e;
+  color: white !important;
+}
+
+.table {
+  color: #51569A;
+}
+.table thead th {
+  border-top: 0;
+  border-bottom: 1px solid rgba(92, 86, 159, 0.3);
+  color: #A358BC;
+  font-weight: normal;
+  font-style: italic;
+}
+.table td, .table th {
+  border-top: 0;
+  border-bottom: 1px solid rgba(92, 86, 159, 0.3);
+}
+
+/* modal */
+.modal-header {
+  border: none;
+  padding: 1rem 30px;
+}
+.modal-title {
+  text-transform: uppercase;
+  color: #51569A;
+  font-weight: normal;
+  font-size: 16px;
+}
+.modal-header .close {
+  padding: 0.3rem 0.7rem;
+  background: #51569A;
+  color: white;
+  margin: -1rem -1rem -1rem auto;
+  border-radius: 20px;
+  font-weight: 100;
+  opacity: 1;
+  line-height: 25px;
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  text-shadow: none;
+  transition: 0.2s;
+  transform: scale(0.8);
+}
+.modal-header .close:hover {
+  color: white;
+}
+.modal-header .close:active {
+  transform: scale(0.7);
+}
+.modal-footer {
+  border: none;
+  position: relative;
+}
+
+/* SPINNER */
+.text-primary {
+    color: #51569A!important;
+}
