@@ -2,6 +2,8 @@ package tickets;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -13,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import database.ConnectionDb;
 import security.CookieSystem;
 
-@WebServlet(value = "/ticket-update")
-public class UpdateTicket extends HttpServlet {
+@WebServlet(value = "/ticket-new")
+public class NewTicket extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,24 +39,27 @@ public class UpdateTicket extends HttpServlet {
             }
             // Get Cookie is valid to check request
 
-            String getTicketID = req.getParameter("ticketID");
+            String ticketNumber = req.getParameter("ticketNumber");
+            String ticketCustomerName = req.getParameter("ticketCustomerName");
+            String ticketSubject = req.getParameter("ticketSubject");
             String ticketStatus = req.getParameter("ticketStatus");
-            String description = req.getParameter("ticketDescription");
-            String getDate = req.getParameter("ticketDate");
+            String ticketDescription = req.getParameter("ticketDescription");
+            String ticketDate = req.getParameter("ticketDate");
 
             ConnectionDb conn = new ConnectionDb();
 
             PreparedStatement stmt = null;
             int resultSet = 0;
 
-            String sql = "update tickets set status = ? where id = ?";
 
+            String sql = "insert into tickets ( ticketNumber, customerName, status, subjectSupport, createdAt ) ";
+            sql += " values ( '" + Integer.parseInt(ticketNumber) + "', '" + ticketCustomerName + "', '" + ticketStatus + "', ";
+            sql += "'" + ticketSubject + "', '" + ticketDate + "' )";
             stmt = conn.dbConn().prepareStatement(sql);
-            stmt.setInt(1, Integer.parseInt(ticketStatus));
-            stmt.setInt(2, Integer.parseInt(getTicketID));
+
             resultSet = stmt.executeUpdate();
 
-            // NO RESULTS UPDATE -----------------------------------------------
+            // NO RESULTS INSERT -----------------------------------------------
             if (resultSet == 0) {
 
                 resp.getWriter().print("ticket-is-not-saved");
@@ -62,10 +67,22 @@ public class UpdateTicket extends HttpServlet {
                 return;
             }
 
-            if(description.length() != 0) {
+            // pega ID do novo ticket
+            int getID = 0;
+            String sqlGet = "select id from tickets where ticketNumber = '"+Integer.parseInt(ticketNumber)+"'";
 
+            Statement stmtGet = conn.dbConn().createStatement();
+            ResultSet resultSetGet = stmtGet.executeQuery(sqlGet);
+
+            while (resultSetGet.next()) {
+                getID = resultSetGet.getInt("id");
+            }
+
+            if(getID != 0) {
+
+                // insere a descrição do ticket
                 sql = "insert into reports ( ticketID, description, interactionDate ) ";
-                sql += " values ( '"+Integer.parseInt(getTicketID)+"', '"+description+"', '"+getDate+"' )";
+                sql += " values ( '" + getID + "', '" + ticketDescription + "', '" + ticketDate + "' ) ";
                 stmt = conn.dbConn().prepareStatement(sql);
 
                 resultSet = stmt.executeUpdate();
@@ -96,5 +113,4 @@ public class UpdateTicket extends HttpServlet {
         }
 
     }
-
 }

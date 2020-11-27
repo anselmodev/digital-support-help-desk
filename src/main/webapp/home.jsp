@@ -184,7 +184,7 @@ if(getSession != null) {
 								<div class="list-interacions" id="interaction"></div>
 
 								<div class="form-group">
-									<label class="label-form" for="report">NOVA INTERAÇÃO</label>
+									<label class="label-form" for="report">NOVA INTERAÇÃO <i>(descrição)</i></label>
 									<textarea class="form-control form-text-area" id="report"
 										rows="7"></textarea>
 								</div>

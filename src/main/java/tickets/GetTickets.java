@@ -50,7 +50,7 @@ public class GetTickets extends HttpServlet {
             Statement stmt = null;
             ResultSet resultSet = null;
 
-            String sql = "select * from tickets LIMIT 30";
+            String sql = "select * from tickets ORDER BY id DESC LIMIT 30";
 
             stmt = conn.dbConn().createStatement();
             resultSet = stmt.executeQuery(sql);

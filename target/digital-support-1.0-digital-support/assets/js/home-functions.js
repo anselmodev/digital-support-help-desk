@@ -54,7 +54,7 @@ function checkPassword(str) {
 
 /* GERADOR DE NÚMEROS RANDÔNICOS */
 function randomNumber() {
-    return Math.floor(Math.random() * (100 - 9999999 + 1)) + 9999999;
+    return Math.floor(Math.random() * (100 - 999999 + 1)) + 999999;
 }
 
 // Prepara lista de interações para exibir em: <div class="list-interacions" id="interaction">
@@ -102,7 +102,7 @@ function setInteraction(dataUpdated) {
             '<p>EM: <b>' + convertDate(dataUpdated.ticketDate) + '</b></p>' +
             '<p class="text-interacion">' + dataUpdated.ticketDescription + '</p>'
         );
-        $( "#interaction" ).scrollTop( 999999 );
+        $("#interaction").scrollTop(999999);
     }
 
     // limpa campo de NOVA INTERAÇÃO
@@ -165,6 +165,8 @@ function dataHome() {
 
                 // CLICK OPEN MODAL
                 $('.list-edit-item').on('click', function () {
+                    $('.list-interacions-title').css('visibility', 'inherit');
+
                     const getTicketID = $(this).attr('data-id');
                     ticketId = getTicketID;
 
@@ -192,7 +194,7 @@ function dataHome() {
                                     if (data !== 'tickets-not-found' && Object.keys(data).length) {
                                         if (!!interactionsPrepare(data)) {
                                             spinner('#modalSpinner', false);
-                                            $( "#interaction" ).scrollTop( 999999 );
+                                            $("#interaction").scrollTop(999999);
                                         }
                                     }
                                 }
@@ -213,14 +215,14 @@ function dataHome() {
 
                     // Ao fechar modal
                     $('#modalTicket').on('hidden.bs.modal', function () {
-                        if(!!ticketSaved) {
+                        if (!!ticketSaved) {
                             dataHome();
                             ticketId = null;
                             ticketSaved = false;
                         }
 
 
-                    })
+                    });
                 });
 
             } else {
@@ -247,6 +249,7 @@ function dataHome() {
 
 /* Update Ticket */
 function updateTicket(dataToUpdate) {
+    spinner('#modalSpinner', false);
 
     $.post('ticket-update', dataToUpdate)
         .done(function (data) {
@@ -258,7 +261,7 @@ function updateTicket(dataToUpdate) {
             }
         })
         .fail(function (data) {
-            spinner('#homeSpinner', false);
+            spinner('#modalSpinner', false);
 
             if (data.responseText === 'server-error') {
                 alert('Atenção! Erro de servidor. Por favor, contate a administração.');
@@ -268,4 +271,68 @@ function updateTicket(dataToUpdate) {
                 return;
             }
         });
+};
+
+/* SALVAR NOVO CHAMADO */
+function setNewItcket() {
+    // pega os valores do input
+    var getName = $('#customerName').val();
+    var getSubject = $('#subject').val();
+    var getStatus = $("#status").val();
+    var getReport = $("#report").val();
+
+    // valida preenchimento antes de salvar
+    if (!getName.length || !getSubject.length || !getReport.length) {
+
+        alert('É obrigatórios preencher todos os campos do formulário!');
+
+    } else {
+        spinner('#modalSpinner', true);
+
+        // define data
+        const dateNow = setDate('yyyy-MM-dd HH:mm:ss');
+
+        // pega dados do formulario
+        const dataTicket = {
+            ticketNumber: Number('2020' + randomNumber()),
+            ticketCustomerName: getName,
+            ticketSubject: getSubject,
+            ticketDescription: getReport,
+            ticketDate: dateNow,
+            ticketStatus: Number(getStatus)
+        };
+
+        $.post('ticket-new', dataTicket)
+            .done(function (data) {
+                if (data === 1) {
+                    ticketSaved = true;
+
+                    $('#modalTicket').modal('hide');
+
+                    // Ao fechar modal
+                    $('#modalTicket').on('hidden.bs.modal', function () {
+                        if (!!ticketSaved) {
+                            dataHome();
+                            ticketSaved = false;
+                        }
+                    });
+                } else {
+                    console.log('Nenhuma alteração aplicada!');
+                }
+
+                spinner('#modalSpinner', false);
+            })
+            .fail(function (data) {
+                spinner('#modalSpinner', false);
+
+                if (data.responseText === 'server-error') {
+                    alert('Atenção! Erro de servidor. Por favor, contate a administração.');
+                    return;
+                } else if (data.responseText === 'login-required') {
+                    window.location.href = "./?setlogin=1";
+                    return;
+                }
+            });
+
+    }
 };

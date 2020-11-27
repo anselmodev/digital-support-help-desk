@@ -47,54 +47,6 @@ var DATA_BASE_SIMULATION_USERS = [
 	}
 ];
 
-
-/* ########## SALVAR NOVO CHAMADO ######### */
-function setItcket() {
-	// pega os valores do input
-	var getName = $('#customerName').val();
-	var getSubject = $('#subject').val();
-	var getStatus = $("#status").val();
-	var getReport = $("#report").val();
-
-	// valida preenchimento antes de salvar
-	if (!getName.length || !getSubject.length || !getReport.length) {
-
-		alert('É obrigatórios preencher todos os campos do formulário!');
-
-	} else {
-
-		// define data
-		var dateNow = setDate();
-
-		// pega dados do formulario
-		var dataTicket = {
-			id: 'item-' + randomNumber(),
-			ticketNumber: Number('2020' + randomNumber()),
-			customerName: getName,
-			subject: getSubject,
-			reportInfo: [
-				{
-					date: dateNow,
-					message: getReport
-				}
-			],
-			updatedAt: dateNow,
-			status: Number(getStatus)
-		};
-
-		// adiciona dados no banco: DATA_BASE_SIMULATION
-		DATA_BASE_SIMULATION.unshift(dataTicket);
-
-		// atualiza lista de chamados e resumo
-		setList(true);
-		getResumeAttendance();
-		getResumeFinalized();
-
-		$('#modalTicket').modal('hide');
-
-	}
-};
-
 $('#show-hide-pass').click(function() {
 	if (!showPassUser) {
 		// define o tipo do input password
@@ -143,6 +95,7 @@ $('#btn-new-ticket').click(function() {
 	$('.protocol-number').text('NOVO CHAMADO');
 
 	// Abre o modal
+	$('.list-interacions-title').css('visibility', 'hidden');
 	$('#modalTicket').modal('show');
 });
 
@@ -150,8 +103,11 @@ $('#btn-new-ticket').click(function() {
 $('#save-ticket').click(function() {
 	
 	if($('.protocol-number').text() === 'NOVO CHAMADO') {
-		console.log('salvar ticket');
+
+		setNewItcket();
+
 	} else {
+
 		const dataToUpdate = {
 			ticketID: ticketId,
 			ticketStatus: $('#status').val(),
