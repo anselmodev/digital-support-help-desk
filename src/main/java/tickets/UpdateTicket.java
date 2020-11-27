@@ -67,18 +67,22 @@ public class UpdateTicket extends HttpServlet {
                 return;
             }
 
-            sql = "insert into reports ( ticketID, description, interactionDate ) ";
-            sql += " values ( '"+Integer.parseInt(getTicketID)+"', '"+description+"', '"+getDate+"' )";
-            stmt = conn.dbConn().prepareStatement(sql);
+            if(description.length() != 0) {
 
-            resultSet = stmt.executeUpdate();
+                sql = "insert into reports ( ticketID, description, interactionDate ) ";
+                sql += " values ( '"+Integer.parseInt(getTicketID)+"', '"+description+"', '"+getDate+"' )";
+                stmt = conn.dbConn().prepareStatement(sql);
 
-            // NO RESULTS INSERT -----------------------------------------------
-            if (resultSet == 0) {
+                resultSet = stmt.executeUpdate();
 
-                resp.getWriter().print("ticket-is-not-saved");
+                // NO RESULTS INSERT -----------------------------------------------
+                if (resultSet == 0) {
 
-                return;
+                    resp.getWriter().print("ticket-is-not-saved");
+
+                    return;
+                }
+
             }
 
             HttpServletResponse hsr = (HttpServletResponse) resp;

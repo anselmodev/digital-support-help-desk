@@ -120,6 +120,7 @@ function setInteraction(dataUpdated) {
 /* LOAD HOME DATA */
 function dataHome() {
     spinner('#homeSpinner', true);
+    $('#list-items').html(''); //clear lista to update
 
     $.get("tickets-all")
         .done(function (data) {
@@ -212,8 +213,13 @@ function dataHome() {
 
                     // Ao fechar modal
                     $('#modalTicket').on('hidden.bs.modal', function () {
-                        ticketId = null;
-                        ticketSaved = false;
+                        if(!!ticketSaved) {
+                            dataHome();
+                            ticketId = null;
+                            ticketSaved = false;
+                        }
+
+
                     })
                 });
 
@@ -246,9 +252,7 @@ function updateTicket(dataToUpdate) {
         .done(function (data) {
             if (data === 1) {
                 setInteraction(dataToUpdate);
-                // adicionar nova descrição na lista
-                // mostrar suscesso ao salvar
-                // successAlert('Chamado Ataulizado com Sucesso!');
+                ticketSaved = true;
             } else {
                 console.log('Nenhuma alteração aplicada!');
             }
