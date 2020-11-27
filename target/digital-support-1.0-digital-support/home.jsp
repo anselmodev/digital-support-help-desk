@@ -179,6 +179,8 @@ if(getSession != null) {
 										placeholder="Digite ...">
 								</div>
 
+								<p class="list-interacions-title">Últimas Interações</p>
+
 								<div class="list-interacions" id="interaction"></div>
 
 								<div class="form-group">

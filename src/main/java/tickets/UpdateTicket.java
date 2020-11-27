@@ -40,11 +40,12 @@ public class UpdateTicket extends HttpServlet {
                 return;
 
             }
+            // Get Cookie is valid to check request
 
-            String getTicketID = req.getParameter("ticketid");
+            String getTicketID = req.getParameter("ticketID");
             String ticketStatus = req.getParameter("ticketStatus");
             String description = req.getParameter("ticketDescription");
-
+            String getDate = req.getParameter("ticketDate");
 
             ConnectionDb conn = new ConnectionDb();
 
@@ -66,11 +67,9 @@ public class UpdateTicket extends HttpServlet {
                 return;
             }
 
-            sql = "insert into reports (ticketID, description) values (?, ?)";
+            sql = "insert into reports ( ticketID, description, interactionDate ) ";
+            sql += " values ( '"+Integer.parseInt(getTicketID)+"', '"+description+"', '"+getDate+"' )";
             stmt = conn.dbConn().prepareStatement(sql);
-            stmt.setInt(1, Integer.parseInt(getTicketID));
-
-            stmt.setNString(2, new String(description.getBytes("ISO8859_1"), "UTF8"));
 
             resultSet = stmt.executeUpdate();
 
@@ -95,8 +94,6 @@ public class UpdateTicket extends HttpServlet {
             hsr.setStatus(500);
 
             resp.getWriter().print("server-error");
-
-            return;
         }
 
     }

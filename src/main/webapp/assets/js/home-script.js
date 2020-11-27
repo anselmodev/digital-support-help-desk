@@ -1,8 +1,4 @@
-/* VARS */
-let ticketSaved = false;
-let userSaved = false;
-
-$(document).ready(function() { 
+$(document).ready(function() {
 	/* ######### PACOTE DE ÍCONES UTILIZADO ######### */ 
 	// https://github.com/feathericons/feather#feather
 	feather.replace();
@@ -52,20 +48,6 @@ var DATA_BASE_SIMULATION_USERS = [
 ];
 
 
-/* ########## ALERTA DE SUCESSO ######### */
-function successAlert(textAlert, timer) {
-	// mostra alerta
-	$('#success-alert').show();
-	$('#success-alert span').text(textAlert || 'Chamado salvo com sucesso');
-
-	// esconde alerta depois do timer definido
-	setTimeout(() => {
-		$('#success-alert').hide();
-		$('#success-alert span').text('');
-	}, timer || 3000);
-};
-
-
 /* ########## SALVAR NOVO CHAMADO ######### */
 function setItcket() {
 	// pega os valores do input
@@ -112,36 +94,6 @@ function setItcket() {
 
 	}
 };
-
-/* ########## SALVAR NOVA INTERAÇÃO PELO ID DO CHAMADO ######### */
-function setInteraction() {
-	var getReport = $("#report").val();
-	var getStatus = $("#status").val();
-
-	// atualiza lista de interações, lista de chamados, resumo
-	// setList(true);
-	// getResumeAttendance();
-	// getResumeFinalized();
-
-	// se existir mensagem no campo NOVA INTERAÇÃO
-	if (getReport.length) {
-		$('#interaction').prepend(
-			'<p>EM: <b>' + dataInteraction.date + '</b></p>' +
-			'<p class="text-interacion">' + dataInteraction.message + '</p>'
-		);
-	}
-
-	// limpa campo de NOVA INTERAÇÃO
-	$("#report").val('');
-
-	// se o chamado for finalizado, fechar o modal ao salvar
-	if (Number(getStatus) === 2) {
-		$('#modalTicket').modal('hide');
-	} else {
-		successAlert('Chamado Atualizado com Sucesso');
-	}
-
-}
 
 $('#show-hide-pass').click(function() {
 	if (!showPassUser) {
@@ -200,7 +152,14 @@ $('#save-ticket').click(function() {
 	if($('.protocol-number').text() === 'NOVO CHAMADO') {
 		console.log('salvar ticket');
 	} else {
-		console.log('atualizar ticket');	
+		const dataToUpdate = {
+			ticketID: ticketId,
+			ticketStatus: $('#status').val(),
+			ticketDescription: $('#report').val(),
+			ticketDate: setDate('yyyy-MM-dd HH:mm:ss')
+		};
+
+		updateTicket(dataToUpdate);
 	}
 	
 });

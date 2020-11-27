@@ -288,15 +288,18 @@ body {
   border-top: 1px dotted #A358BC;
   border-bottom: 1px dotted #A358BC;
   position: relative;
+  overflow-y: auto;
+  max-height: 250px;
 }
 
 .list-interacions-title {
   color: #A358BC;
-  padding: 5px 20px 5px 0;
-  position: absolute;
-  top: -15px;
+  padding: 5px 0px 5px 0;
+  position: relative;
+  top: 30px;
   background: white;
-  /* margin-left: 10px; */
+  margin-bottom: 0;
+  font-size: 14px;
 }
 
 .text-interacion {
