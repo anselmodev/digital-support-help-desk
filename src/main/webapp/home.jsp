@@ -264,6 +264,13 @@
                                     width="35" color="#A358BC" id="eye-hide"></i>
                             </a>
                             </div>
+
+                            <div class="form-group select-access">
+                                <select class="form-control status-form" id="accessType">
+                                    <option value="0">Usuário Comum</option>
+                                    <option value="1">Administrador</option>
+                                </select>
+                            </div>
                         </form>
 
                         <div class="list-users">
@@ -278,7 +285,7 @@
                             </table>
                         </div>
 
-                        <p class="success-save" id="success-alert">
+                        <p class="success-save" id="success-alert-user">
                             <span class="badge badge-success"> </span>
                         </p>
 

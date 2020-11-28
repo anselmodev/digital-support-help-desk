@@ -50,7 +50,7 @@ public class ListUsers extends HttpServlet {
             Statement stmt = null;
             ResultSet resultSet = null;
 
-            String sql = "select id as userID, fullName as userName, email as userEmail from users ORDER BY id DESC LIMIT 30";
+            String sql = "select id as userID, fullName as userName, email as userEmail, typeAccess as userTypeAccess from users ORDER BY id DESC LIMIT 30";
 
             stmt = conn.dbConn().createStatement();
             resultSet = stmt.executeQuery(sql);
@@ -67,6 +67,7 @@ public class ListUsers extends HttpServlet {
                 JSONObject userItem = new JSONObject();
 
                 userItem.put("userID", resultSet.getInt("userID"));
+                userItem.put("userTypeAccess", resultSet.getInt("userTypeAccess"));
                 userItem.put("userName", resultSet.getString("userName"));
                 userItem.put("userEmail", resultSet.getString("userEmail"));
 

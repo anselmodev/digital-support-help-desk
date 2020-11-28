@@ -53,8 +53,8 @@ public class LoginUser extends HttpServlet {
                 resEmail = resultSet.getString("email");
                 resPassword = resultSet.getString("password");
 
-                resultLogin.put("8e3c824e1d6254b74a013799c1565538", resultSet.getInt("userNumber")); // 8e3c824e1d6254b74a013799c1565538
-                resultLogin.put("a0fbf479272cd38c220fbf726678d8d6", resultSet.getString("fullName")); // a0fbf479272cd38c220fbf726678d8d6
+                resultLogin.put("8e3c824e1d6254b74a013799c1565538", resultSet.getInt("userNumber"));
+                resultLogin.put("a0fbf479272cd38c220fbf726678d8d6", resultSet.getString("fullName"));
                 resultLogin.put("authSuccess", "authentication-success");
             }
 

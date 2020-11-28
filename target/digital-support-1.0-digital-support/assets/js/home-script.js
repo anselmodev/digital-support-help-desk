@@ -119,6 +119,7 @@ $('#user-register, #new-user').click(function () {
     $('#userName').val('');
     $('#userEmail').val('');
     $('#userPass').val('');
+    $('#accessType').val(0).change();
 
     // Abre o modal
     $('#modalUser').modal('show');

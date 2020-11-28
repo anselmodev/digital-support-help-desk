@@ -3,6 +3,7 @@ let ticketId = null;
 let ticketSaved = false;
 let saveUser = null;
 let userID = null;
+let showPassUser = false;
 
 /* SPINNER */
 function spinner(elementID, show) {
@@ -99,15 +100,16 @@ function interactionsPrepare(data) {
 };
 
 /* ALERTA DE SUCESSO */
-function successAlert(textAlert, timer) {
+function successAlert(textAlert, timer, element) {
+    const getElement = element || '#success-alert';
     // mostra alerta
-    $('#success-alert').show();
-    $('#success-alert span').text(textAlert || 'Chamado salvo com sucesso');
+    $(getElement).show();
+    $(`${getElement} span`).text(textAlert || 'Chamado salvo com sucesso');
 
     // esconde alerta depois do timer definido
     setTimeout(() => {
-        $('#success-alert').hide();
-        $('#success-alert span').text('');
+        $(getElement).hide();
+        $(`${getElement} span`).text('');
     }, timer || 3000);
 };
 
@@ -409,6 +411,7 @@ function openUser(element) {
     userID = getBtnElUser.attr('data-id');
     const getName = getBtnElUser.attr('data-name');
     const getEmail = getBtnElUser.attr('data-email');
+    const getAccess = getBtnElUser.attr('data-access');
 
     // alterar dica do modal
     usersTips('edit', getName);
@@ -416,7 +419,39 @@ function openUser(element) {
     // Setar info do usuário no Form
     $('#userName').val(getName);
     $('#userEmail').val(getEmail);
+    $("#accessType").val(getAccess).change();
 
+};
+
+/* User html Table */
+function userTableItem(itemData) {
+    $('#list-items-users').append(
+        '<tr>' +
+        '<td class="name-user">' + itemData.userName + '</td>' +
+        '<td>' +
+        '<a class="list-edit-item user-item" data-id="' + itemData.userID + '" data-name="' + itemData.userName + '" data-email="' + itemData.userEmail + '" data-access="' + itemData.userTypeAccess + '">' +
+        `
+            <svg xmlns="http://www.w3.org/2000/svg" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
+              <defs>
+                <style>.a{clip-path:url(#b);}.b{fill:none;stroke:#a358bc;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}.c{fill:transparent;}</style>
+                <clipPath id="b">
+                  <rect width="25" height="25"/>
+                </clipPath>
+              </defs>
+              <g id="a" class="a">
+                <rect class="c" width="25" height="25"/>
+                <g transform="translate(-1.598 -1.416)">
+                  <path class="b" d="M13.029,6h-7.8A2.229,2.229,0,0,0,3,8.229v15.6a2.229,2.229,0,0,0,2.229,2.229h15.6a2.229,2.229,0,0,0,2.229-2.229v-7.8" transform="translate(0 -1.044)"/>
+                  <path class="b" d="M22.583,3.444a2.138,2.138,0,0,1,3.024,3.024l-9.575,9.575L12,17.051l1.008-4.032Z" transform="translate(-1.037)"/>
+                </g>
+              </g>
+            </svg>
+            ` +
+        '</a>' +
+        '</td>' +
+        '</tr>'
+    );
 };
 
 /* Abrir e Alterar Usuário */
@@ -459,28 +494,59 @@ function setUser(element) {
         if (validateUser !== false) {
             spinner('#modalSpinnerUsers', true);
 
-            console.log('Adicionar Usuário');
+            $.post('user-new', {
+                userAdmin: localStorage.getItem('8e3c824e1d6254b74a013799c1565538'),
+                userNumber: randomNumber(),
+                userName: $('#userName').val(),
+                userEmail: $('#userEmail').val(),
+                userPass: $('#userPass').val(),
+                userTypeAccess:  $('#accessType').val()
+            })
+                .done(function (data) {
+                    if (data === 'user-is-not-authorized') {
+                        alert('Sua conta não tem autorização para criar ou editar um usuários!');
 
-            // $.post('user-new', {
-            //     userName: $().val(),
-            //     userEmail: $().val(),
-            //     userPass: $().val()
-            // })
-            //     .done(function (data) {
-            //          // Atualizar lista de usuários
-            //          spinner('#modalSpinnerUsers', false);
-            //     })
-            //     .fail(function (data) {
-            //         spinner('#modalSpinnerUsers', false);
-            //
-            //         if (data.responseText === 'server-error') {
-            //             alert('Atenção! Erro de servidor. Por favor, contate a administração.');
-            //             return;
-            //         } else if (data.responseText === 'login-required') {
-            //             window.location.href = "./?setlogin=1";
-            //             return;
-            //         }
-            //     });
+                        return false;
+                    }
+
+                    if (data === 'user-is-not-saved') {
+                        alert('Nenhuma Alteração Efetuada!');
+
+                        return false;
+                    }
+
+                    // Atualizar lista de usuários
+                    $('#list-items-users').html('');
+                    getUsersList();
+
+                    // Limpar Formulário
+                    $('#userName').val('');
+                    $('#userEmail').val('');
+                    $('#userPass').val('');
+                    $('#accessType').val(0).change();
+
+                    // resetar o input password
+                    $('#userPass').attr('type', 'password');
+                    $('#eye-hide').show();
+                    $('#eye-show').hide();
+
+                    spinner('#modalSpinnerUsers', false);
+
+                    // alerta de salvo com sucesso
+                    successAlert('Usuário Salvo com Sucesso!', 3000, '#success-alert-user');
+
+                })
+                .fail(function (data) {
+                    spinner('#modalSpinnerUsers', false);
+
+                    if (data.responseText === 'server-error') {
+                        alert('Atenção! Erro de servidor. Por favor, contate a administração.');
+                        return;
+                    } else if (data.responseText === 'login-required') {
+                        window.location.href = "./?setlogin=1";
+                        return;
+                    }
+                });
         }
 
     }
@@ -495,34 +561,8 @@ function getUsersList() {
         .done(function (data) {
 
             // percorre a lista para inserir as linhas em: <tbody id="list-items">
-            data.resultUsers.map(function (item, index) {
-                $('#list-items-users').append(
-                    '<tr>' +
-                    '<td class="name-user">' + item.userName + '</td>' +
-                    '<td>' +
-                    '<a class="list-edit-item user-item" data-id="' + item.userID + '" data-name="' + item.userName + '" data-email="' + item.userEmail + '">' +
-                    `
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                          xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
-                          <defs>
-                            <style>.a{clip-path:url(#b);}.b{fill:none;stroke:#a358bc;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}.c{fill:transparent;}</style>
-                            <clipPath id="b">
-                              <rect width="25" height="25"/>
-                            </clipPath>
-                          </defs>
-                          <g id="a" class="a">
-                            <rect class="c" width="25" height="25"/>
-                            <g transform="translate(-1.598 -1.416)">
-                              <path class="b" d="M13.029,6h-7.8A2.229,2.229,0,0,0,3,8.229v15.6a2.229,2.229,0,0,0,2.229,2.229h15.6a2.229,2.229,0,0,0,2.229-2.229v-7.8" transform="translate(0 -1.044)"/>
-                              <path class="b" d="M22.583,3.444a2.138,2.138,0,0,1,3.024,3.024l-9.575,9.575L12,17.051l1.008-4.032Z" transform="translate(-1.037)"/>
-                            </g>
-                          </g>
-                        </svg>
-                        ` +
-                    '</a>' +
-                    '</td>' +
-                    '</tr>'
-                );
+            data.resultUsers.map(function (item) {
+                userTableItem(item);
             });
 
             spinner('#modalSpinnerUsers', false);
