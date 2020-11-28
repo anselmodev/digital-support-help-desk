@@ -4,7 +4,6 @@
 * Reutilização do projeto de interface do <b>Primeiro Semestre</b>: [Digital Support](https://github.com/anselmodev/digital-support)
 * Linguagens: HTML5, CSS, JAVASCRIPT, BOOTSTRAP e JQUERY.
 * Requisições efetuadas por AJAX.
-<br>
 
 ### Especificações do Servidor e Liguagem principal
 * Linguagem JAVA.
@@ -12,24 +11,22 @@
 * Servidor Tomcat 9.0.39
 * Banco de dados MYSQL 5.7.30 ou superior.
 * Módulos/Libs: "mysql-connector-java-8.0.21" e " json-simple-1.1.1"
-* URL LOCAL: http://localhost:8080/digital_support
-<br> 
+* URL LOCAL: http://localhost:8080/digital_support 
+
 ### Software para desenvolvimento
 * [Intellij IDEA](https://www.jetbrains.com/pt-br/idea/download)
 * [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
 * [POSTMAN - Para Teste de Rotas ](https://www.postman.com/downloads/)
-<br> 
+
 ### Ambiente para banco de dados Mysql
 * [WAMPSERVER para Windows](https://www.wampserver.com/en/)
 * [MAMP para Mac](https://www.mamp.info/en/downloads/)
 * [XAMP para Linux](https://www.apachefriends.org/pt_br/download.html)
 
-<br>
 ### Login do sistema com o Administrador MASTER
 * E-mail: admin@admin.com
 * Senha: aalmaster2717
 
-<br><br> 
 ## Configuração do Banco de Dados MYSQL
 * Nome da Tabela: "digitalsupport"
 * Usuário: root (pode variar conforme o ambiente instalado na máquina)
