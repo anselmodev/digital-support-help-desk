@@ -240,7 +240,8 @@
 
                     <!-- modal form content -->
                     <div class="modal-body">
-                        <p class="tip-user tip-user-new">* Preencha para adicionar um novo usuário ou clique em <b>"Editar"</b>!</p>
+                        <p class="tip-user tip-user-new">* Preencha para adicionar um novo usuário ou clique em <b>"Editar"</b>!
+                        </p>
                         <form class="modal-form">
                             <div class="form-group">
                                 <label class="label-form" for="userName">Nome Completo</label>
@@ -255,18 +256,21 @@
                             <div class="form-group pass-user">
                                 <label class="label-form" for="userPass">Definir Senha</label>
                                 <input type="password" class="form-control" id="userPass"
-                                       placeholder="Digite ..."> <a class="btn-eye"
-                                                                    id="show-hide-pass"> <i data-feather="eye"
-                                                                                            width="35"
-                                                                                            color="#A358BC"
-                                                                                            id="eye-show"></i> <i
-                                    data-feather="eye-off"
-                                    width="35" color="#A358BC" id="eye-hide"></i>
-                            </a>
+                                       placeholder="Digite ...">
+                                <a class="btn-eye"
+                                   id="show-hide-pass">
+                                    <i data-feather="eye"
+                                       width="35"
+                                       color="#A358BC"
+                                       id="eye-show"></i> <i
+                                        data-feather="eye-off"
+                                        width="35" color="#A358BC" id="eye-hide"></i>
+                                </a>
                             </div>
 
                             <div class="form-group select-access">
                                 <select class="form-control status-form" id="accessType">
+                                    <option selected disabled>Tipo de acesso:</option>
                                     <option value="0">Usuário Comum</option>
                                     <option value="1">Administrador</option>
                                 </select>

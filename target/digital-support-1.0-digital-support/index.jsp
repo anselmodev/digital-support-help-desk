@@ -85,7 +85,7 @@
 
             <div class="login-buttons">
                 <a href="recover-access.jsp" id="btn-recover-form"
-                   class="btn btn-link" role="button">Esqueci a Senha</a>
+                   class="btn btn-link btn-recover" role="button">Esqueci a Senha</a>
                 <button id="btn-login" class="btn btn-primary">ENTRAR</button>
             </div>
 

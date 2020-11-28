@@ -38,6 +38,12 @@ body {
   opacity: 0.1;
 }
 
+.btn-recover {
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
 /* LOGIN BOX */
 .login-box {
   min-width: 320px;

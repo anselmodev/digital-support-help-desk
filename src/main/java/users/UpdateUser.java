@@ -15,8 +15,8 @@ import database.ConnectionDb;
 import security.CookieSystem;
 import security.DefinePass;
 
-@WebServlet(value = "/user-new")
-public class NewUser extends HttpServlet {
+@WebServlet(value = "/user-update")
+public class UpdateUser extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,14 +40,13 @@ public class NewUser extends HttpServlet {
             // Get Cookie is valid to check request
 
             ConnectionDb conn = new ConnectionDb();
-            String sql = null;
 
             String userAdmin = req.getParameter("userAdmin");
-            String userNumber = req.getParameter("userNumber");
+            String userID = req.getParameter("userID");
             String userName = req.getParameter("userName");
             String userEmail = req.getParameter("userEmail");
             String userPass = req.getParameter("userPass");
-            String typeAccess = req.getParameter("userTypeAccess");
+            String userTypeAccess = req.getParameter("userTypeAccess");
 
             // Pega TYPEACCESS do usuário atual para verificar nível de acesso
             int getTypeAccess = 0;
@@ -64,14 +63,19 @@ public class NewUser extends HttpServlet {
 
                 PreparedStatement stmt = null;
                 int resultSet = 0;
+                String sql = null;
 
-                // Hash Password
-                DefinePass hasPass = new DefinePass();
-                String hashPassworForm = hasPass.hashPassword(userPass);
+                sql = "update users set fullName = '"+userName+"', email = '"+userEmail+"', typeAccess = '"+userTypeAccess+"'";
 
-                // insere novo usuário
-                sql = "insert into users ( userNumber, fullName, email, password, typeAccess ) ";
-                sql += " values ( '" + userNumber + "', '" + userName + "', '" + userEmail + "', '" + hashPassworForm + "', '" + typeAccess + "' ) ";
+                // Se existir atualização de senha
+                if(userPass.length() >= 6) {
+                    DefinePass hasPass = new DefinePass();
+                    String hashPassworForm = hasPass.hashPassword(userPass);
+                    sql += ", password = '"+hashPassworForm+"'";
+                }
+
+                // Atualiza usuário
+                sql += " where id = '"+userID+"'";
                 stmt = conn.dbConn().prepareStatement(sql);
 
                 resultSet = stmt.executeUpdate();
@@ -79,29 +83,17 @@ public class NewUser extends HttpServlet {
                 // NO RESULTS INSERT -----------------------------------------------
                 if (resultSet == 0) {
 
-                    resp.getWriter().print("user-is-not-saved");
+                    resp.getWriter().print("user-is-not-updated");
 
                     return;
-                }
 
-                // pega ID do novo usuário
-                int getIDUser = 0;
-                String sqlGetNewUser = "select id from users where userNumber = '"+Integer.parseInt(userNumber)+"'";
-
-                Statement stmtGetNewUser = conn.dbConn().createStatement();
-                ResultSet resultSetGetNewUser = stmtGetNewUser.executeQuery(sqlGetNewUser);
-
-                while (resultSetGetNewUser.next()) {
-                    getIDUser = resultSetGetNewUser.getInt("id");
-                }
-
-                if(getIDUser != 0) {
+                } else {
 
                     HttpServletResponse hsr = (HttpServletResponse) resp;
                     hsr.setContentType("application/json");
                     hsr.setCharacterEncoding("UTF8");
 
-                    resp.getWriter().print(getIDUser);
+                    resp.getWriter().print(resultSet);
 
                 }
 
@@ -124,4 +116,5 @@ public class NewUser extends HttpServlet {
         }
 
     }
+
 }

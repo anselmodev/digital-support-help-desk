@@ -1,7 +1,8 @@
 /* VARS */
 let ticketId = null;
 let ticketSaved = false;
-let saveUser = null;
+let userNumber = 0;
+let userRemovable = null;
 let userID = null;
 let showPassUser = false;
 
@@ -412,6 +413,7 @@ function openUser(element) {
     const getName = getBtnElUser.attr('data-name');
     const getEmail = getBtnElUser.attr('data-email');
     const getAccess = getBtnElUser.attr('data-access');
+    userNumber = getBtnElUser.attr('data-number');
 
     // alterar dica do modal
     usersTips('edit', getName);
@@ -427,9 +429,9 @@ function openUser(element) {
 function userTableItem(itemData) {
     $('#list-items-users').append(
         '<tr>' +
-        '<td class="name-user">' + itemData.userName + '</td>' +
+        '<td class="name-user">' + itemData.userName + ' <small><em>'+(!itemData.userRemovable ? '( não editável )' : '')+'</em></small></td>' +
         '<td>' +
-        '<a class="list-edit-item user-item" data-id="' + itemData.userID + '" data-name="' + itemData.userName + '" data-email="' + itemData.userEmail + '" data-access="' + itemData.userTypeAccess + '">' +
+        '<a class="list-edit-item user-item '+(!itemData.userRemovable ? 'blocked-edit' : '')+'" data-id="' + itemData.userID + '" data-name="' + itemData.userName + '" data-email="' + itemData.userEmail + '" data-access="' + itemData.userTypeAccess + '" data-number="' + itemData.userNumber + '">' +
         `
             <svg xmlns="http://www.w3.org/2000/svg" 
               xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
@@ -463,30 +465,50 @@ function setUser(element) {
         if (validateUser !== false) {
             spinner('#modalSpinnerUsers', true);
 
-            console.log('Atualizar Usuário');
+            $.post('user-update', {
+                userAdmin: localStorage.getItem('8e3c824e1d6254b74a013799c1565538'),
+                userRemovable,
+                userID,
+                userName: $('#userName').val(),
+                userEmail: $('#userEmail').val(),
+                userPass: $('#userPass').val(),
+                userTypeAccess:  $('#accessType').val()
+            })
+                .done(function (data) {
+                    if (data === 'user-is-not-authorized') {
+                        alert('Sua conta não tem autorização para criar ou editar um usuários!');
 
-            // $.post('user-update', {
-            //     userID: getID,
-            //     userName: $().val(),
-            //     userEmail: $().val(),
-            //     userPass: $().val()
-            // })
-            //     .done(function (data) {
-            //          // Atualizar lista de usuários
-            //
-            //          spinner('#modalSpinnerUsers', false);
-            //     })
-            //     .fail(function (data) {
-            //         spinner('#modalSpinnerUsers', false);
-            //
-            //         if (data.responseText === 'server-error') {
-            //             alert('Atenção! Erro de servidor. Por favor, contate a administração.');
-            //             return;
-            //         } else if (data.responseText === 'login-required') {
-            //             window.location.href = "./?setlogin=1";
-            //             return;
-            //         }
-            //     });
+                        return false;
+                    }
+
+                    if (data === 'user-is-not-saved') {
+                        alert('Nenhuma Alteração Efetuada!');
+
+                        return false;
+                    }
+
+                    // Atualizar lista de usuários
+                    $('#list-items-users').html('');
+                    getUsersList();
+
+                    spinner('#modalSpinnerUsers', false);
+
+                    usersTips('edit', $('#userName').val());
+
+                    // alerta de salvo com sucesso
+                    successAlert('Usuário Atualizado com Sucesso!', 3000, '#success-alert-user');
+                })
+                .fail(function (data) {
+                    spinner('#modalSpinnerUsers', false);
+
+                    if (data.responseText === 'server-error') {
+                        alert('Atenção! Erro de servidor. Por favor, contate a administração.');
+                        return;
+                    } else if (data.responseText === 'login-required') {
+                        window.location.href = "./?setlogin=1";
+                        return;
+                    }
+                });
         }
     } else if (!userID) {
         const validateUser = checkUser();

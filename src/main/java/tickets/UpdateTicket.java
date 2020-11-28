@@ -2,7 +2,6 @@ package tickets;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

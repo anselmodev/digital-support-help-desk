@@ -344,7 +344,7 @@ body {
 .select-access {
   position: relative;
   top: 10px;
-  left: 10px;
+  left: 0px;
   width: 160px;
 }
 
@@ -422,6 +422,12 @@ body {
   bottom: -10px;
   right: 40px;
   display: none;
+}
+
+.blocked-edit {
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 /* SPINNER HOME */
