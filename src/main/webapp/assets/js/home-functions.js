@@ -1,7 +1,8 @@
 /* VARS */
 let ticketId = null;
 let ticketSaved = false;
-let userSaved = false;
+let saveUser = null;
+let userID = null;
 
 /* SPINNER */
 function spinner(elementID, show) {
@@ -15,6 +16,23 @@ function spinner(elementID, show) {
 
     }
 }
+
+/* Dica modal Usuários */
+function usersTips(type, getName) {
+
+    if (type === 'edit') {
+
+        $('.tip-user').html(`* Edição do Usuário:  ${getName}`)
+            .removeClass('tip-user-new').addClass('tip-user-edit');
+
+    } else if (type === 'new') {
+
+        $('.tip-user').html(` Preencha para adicionar um novo usuário ou clique em "Editar"!`)
+            .removeClass('tip-user-edit').addClass('tip-user-new');
+
+    }
+
+};
 
 // converte status para exibir em texto (condição ternária)
 function setStatus(status) {
@@ -334,4 +352,197 @@ function setNewItcket() {
             });
 
     }
+};
+
+/* User Name and number */
+function userInfo() {
+    return {
+        userName: localStorage.getItem('a0fbf479272cd38c220fbf726678d8d6').split(' ')[0],
+        userNumber: localStorage.getItem('8e3c824e1d6254b74a013799c1565538')
+    };
+};
+
+/* validar usuário */
+function checkUser() {
+    // dados do usuário vindo do form
+    const userName = $('#userName').val();
+    const userEmail = $('#userEmail').val();
+    const userPass = $('#userPass').val();
+
+    // verifica campos vazios
+    if (!userName.length || !userEmail.length) {
+        alert("É obrigatório preencher todos os dados do usuário!");
+        return false;
+    }
+
+    // valida email
+    if (!validateEmail(userEmail)) {
+        alert("O e-mail digitado não é válido!");
+        return false;
+    }
+
+    // se novo usuário
+    if (!userID) {
+        if (!checkPassword(userPass)) {
+            alert("A senha de possuir ao menos 6 caracteres entre maiúsculas, minúsculas e números!");
+            return false;
+        }
+    } else {
+        if (userPass.length && !checkPassword(userPass)) {
+            alert("A senha de possuir ao menos 6 caracteres entre maiúsculas, minúsculas e números!");
+            return false;
+        }
+    }
+
+    return {
+        userID: userID,
+        userName: userName,
+        userEmail: userEmail,
+        userPass: userPass
+    }
+};
+
+/* Abrir usuário */
+function openUser(element) {
+
+    const getBtnElUser = $(element);
+    userID = getBtnElUser.attr('data-id');
+    const getName = getBtnElUser.attr('data-name');
+    const getEmail = getBtnElUser.attr('data-email');
+
+    // alterar dica do modal
+    usersTips('edit', getName);
+
+    // Setar info do usuário no Form
+    $('#userName').val(getName);
+    $('#userEmail').val(getEmail);
+
+};
+
+/* Abrir e Alterar Usuário */
+function setUser(element) {
+
+    if (userID) {
+        const validateUser = checkUser();
+
+        if (validateUser !== false) {
+            spinner('#modalSpinnerUsers', true);
+
+            console.log('Atualizar Usuário');
+
+            // $.post('user-update', {
+            //     userID: getID,
+            //     userName: $().val(),
+            //     userEmail: $().val(),
+            //     userPass: $().val()
+            // })
+            //     .done(function (data) {
+            //          // Atualizar lista de usuários
+            //
+            //          spinner('#modalSpinnerUsers', false);
+            //     })
+            //     .fail(function (data) {
+            //         spinner('#modalSpinnerUsers', false);
+            //
+            //         if (data.responseText === 'server-error') {
+            //             alert('Atenção! Erro de servidor. Por favor, contate a administração.');
+            //             return;
+            //         } else if (data.responseText === 'login-required') {
+            //             window.location.href = "./?setlogin=1";
+            //             return;
+            //         }
+            //     });
+        }
+    } else if (!userID) {
+        const validateUser = checkUser();
+
+        if (validateUser !== false) {
+            spinner('#modalSpinnerUsers', true);
+
+            console.log('Adicionar Usuário');
+
+            // $.post('user-new', {
+            //     userName: $().val(),
+            //     userEmail: $().val(),
+            //     userPass: $().val()
+            // })
+            //     .done(function (data) {
+            //          // Atualizar lista de usuários
+            //          spinner('#modalSpinnerUsers', false);
+            //     })
+            //     .fail(function (data) {
+            //         spinner('#modalSpinnerUsers', false);
+            //
+            //         if (data.responseText === 'server-error') {
+            //             alert('Atenção! Erro de servidor. Por favor, contate a administração.');
+            //             return;
+            //         } else if (data.responseText === 'login-required') {
+            //             window.location.href = "./?setlogin=1";
+            //             return;
+            //         }
+            //     });
+        }
+
+    }
+
+};
+
+/* Listar Usuários */
+function getUsersList() {
+    spinner('#modalSpinnerUsers', true);
+
+    $.get('users-listall')
+        .done(function (data) {
+
+            // percorre a lista para inserir as linhas em: <tbody id="list-items">
+            data.resultUsers.map(function (item, index) {
+                $('#list-items-users').append(
+                    '<tr>' +
+                    '<td class="name-user">' + item.userName + '</td>' +
+                    '<td>' +
+                    '<a class="list-edit-item user-item" data-id="' + item.userID + '" data-name="' + item.userName + '" data-email="' + item.userEmail + '">' +
+                    `
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                          xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
+                          <defs>
+                            <style>.a{clip-path:url(#b);}.b{fill:none;stroke:#a358bc;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}.c{fill:transparent;}</style>
+                            <clipPath id="b">
+                              <rect width="25" height="25"/>
+                            </clipPath>
+                          </defs>
+                          <g id="a" class="a">
+                            <rect class="c" width="25" height="25"/>
+                            <g transform="translate(-1.598 -1.416)">
+                              <path class="b" d="M13.029,6h-7.8A2.229,2.229,0,0,0,3,8.229v15.6a2.229,2.229,0,0,0,2.229,2.229h15.6a2.229,2.229,0,0,0,2.229-2.229v-7.8" transform="translate(0 -1.044)"/>
+                              <path class="b" d="M22.583,3.444a2.138,2.138,0,0,1,3.024,3.024l-9.575,9.575L12,17.051l1.008-4.032Z" transform="translate(-1.037)"/>
+                            </g>
+                          </g>
+                        </svg>
+                        ` +
+                    '</a>' +
+                    '</td>' +
+                    '</tr>'
+                );
+            });
+
+            spinner('#modalSpinnerUsers', false);
+
+            // Abrir usuário para edição
+            $('.user-item').click(function () {
+                $('#userPass').val('');
+                openUser(this);
+            });
+        })
+        .fail(function (data) {
+            spinner('#modalSpinnerUsers', false);
+
+            if (data.responseText === 'server-error') {
+                alert('Atenção! Erro de servidor. Por favor, contate a administração.');
+                return;
+            } else if (data.responseText === 'login-required') {
+                window.location.href = "./?setlogin=1";
+                return;
+            }
+        });
+
 };

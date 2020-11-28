@@ -29,7 +29,9 @@ $(document).ready(function () {
     });
     /* LOGOUT ----------------------------------------------- */
 
-    /* GET USERS */
+    /* USERS */
+    const getUserInfo = userInfo();
+    $('#user-profile').text(`Usuário: ${getUserInfo.userName}`);
 
     /* GET HOME DATA */
     dataHome();
@@ -109,22 +111,10 @@ $(document).ready(function () {
 
 });
 
-/* ########## BANCO DE DADOS SIMULADO (objeto javascript) ######### */
-// lista de usuários
-var DATA_BASE_SIMULATION_USERS = [
-    {
-        id: 'user-1',
-        name: 'Silvia Alencar',
-        email: 'silvia-al@meuemail.com.br',
-        password: '123456789'
-    }
-];
-
-
 // abrir modal cadastro de usuários
 $('#user-register, #new-user').click(function () {
-    // limpa últimas infos do form e index
-    indexUser = undefined;
+    // reseta último ID
+    userID = null;
 
     $('#userName').val('');
     $('#userEmail').val('');
@@ -134,75 +124,34 @@ $('#user-register, #new-user').click(function () {
     $('#modalUser').modal('show');
 
     // resetar o input password
-    showPassUser = false;
     $('#userPass').attr('type', 'password');
     $('#eye-hide').show();
     $('#eye-show').hide();
+
+    // alterar dica do modal
+    usersTips('new');
 
 
     // valida o ID do elemento "#new-user" clicado para dar o foco no input name quando NOVO
     if ($(this).attr('id') === 'new-user') {
         $('#userName').focus();
+
+        // alterar dica do modal
+        usersTips('new');
+
+    } else {
+
+        // limpar última lista aberta
+        $('#list-items-users').html('');
+
+        getUsersList();
+
     }
 });
 
-
 // salvar/atualizar usuário
 $('#save-user').click(function () {
-    // dados do usuário vindo do form
-    var userName = $('#userName').val();
-    var userEmail = $('#userEmail').val();
-    var userPass = $('#userPass').val();
 
-    // verifica campos vazios
-    if (!userName.length || !userEmail.length) {
-        alert("É obrigatório preencher todos os dados do usuário!");
-        return false;
-    }
-
-    // valida email
-    if (!validateEmail(userEmail)) {
-        alert("O e-mail digitado não é válido!");
-        return false;
-    }
-
-    // valida senha (mínimo de 6 caracteres com maiúsculas, minúsculas e números)
-    if (userPass.length && !checkPassword(userPass)) {
-        alert("A senha de possuir ao menos 6 caracteres entre maiúsculas, minúsculas e números!");
-        return false;
-    }
-
-    // salvar usuário editado se houver o INDEX
-    if (indexUser !== undefined) {
-
-        DATA_BASE_SIMULATION_USERS[indexUser].name = userName;
-        DATA_BASE_SIMULATION_USERS[indexUser].email = userEmail;
-
-        // se a senha foi preenchida para alteração
-        if (userPass.length) {
-            DATA_BASE_SIMULATION_USERS[indexUser].password = userName;
-        }
-
-    }
-
-    // salvar novo usuário
-    else {
-
-        DATA_BASE_SIMULATION_USERS.unshift({
-            id: 'user-' + randomNumber(),
-            name: userName,
-            email: userEmail,
-            password: userPass
-        });
-
-        // Limpar form
-        $('#userName').val('');
-        $('#userEmail').val('');
-        $('#userPass').val('');
-
-    }
-
-    // atualiza a lista de usuários e reseta o form
-    setListUsers(true);
+    setUser();
 
 });

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import database.ConnectionDb;
 import security.DefinePass;
 import security.CookieSystem;
+import org.json.simple.JSONObject;
 
 @WebServlet(value = "/users-login")
 public class LoginUser extends HttpServlet {
@@ -26,6 +27,9 @@ public class LoginUser extends HttpServlet {
         int resUserNumber = 0;
         String resEmail = null;
         String resPassword = null;
+        String resName = null;
+
+        JSONObject resultLogin = new JSONObject();
 
 
         try {
@@ -38,7 +42,7 @@ public class LoginUser extends HttpServlet {
             DefinePass hasPass = new DefinePass();
             String hashPassworForm = hasPass.hashPassword(formPassword);
 
-            String sql = "select userNumber, email, password from users where email = '" + formEmail
+            String sql = "select userNumber, fullName, email, password from users where email = '" + formEmail
                     + "' and password = '" + hashPassworForm + "'";
 
             stmt = conn.dbConn().createStatement();
@@ -48,11 +52,15 @@ public class LoginUser extends HttpServlet {
                 resUserNumber = resultSet.getInt("userNumber");
                 resEmail = resultSet.getString("email");
                 resPassword = resultSet.getString("password");
+
+                resultLogin.put("8e3c824e1d6254b74a013799c1565538", resultSet.getInt("userNumber")); // 8e3c824e1d6254b74a013799c1565538
+                resultLogin.put("a0fbf479272cd38c220fbf726678d8d6", resultSet.getString("fullName")); // a0fbf479272cd38c220fbf726678d8d6
+                resultLogin.put("authSuccess", "authentication-success");
             }
 
             if (resEmail == null || resPassword == null) {
 
-                resp.getWriter().print("autenthication-error");
+                resp.getWriter().print("authentication-error");
 
                 HttpServletResponse hsr = (HttpServletResponse) resp;
                 hsr.setStatus(401);
@@ -61,7 +69,10 @@ public class LoginUser extends HttpServlet {
 
             }
 
-            resp.getWriter().print("autenthication-success");
+            HttpServletResponse hsr = (HttpServletResponse) resp;
+            hsr.setContentType("application/json");
+            hsr.setCharacterEncoding("UTF-8");
+            resp.getWriter().print(resultLogin);
 
 
             // Set Cookie on success ------------------------------------------

@@ -40,12 +40,15 @@ $(document).ready(function() {
 
 		// Verificar dados do usuário e autenticar
 		$.post("users-login", { email: getMail, password: getPass })
-			.done(function(data) {
-				if(data === 'autenthication-success') {
+
+			.done(function(data) { console.log(data);
+				if(data && data.authSuccess === 'authentication-success') {
+					localStorage.setItem('8e3c824e1d6254b74a013799c1565538', data['8e3c824e1d6254b74a013799c1565538']);
+					localStorage.setItem('a0fbf479272cd38c220fbf726678d8d6', data['a0fbf479272cd38c220fbf726678d8d6']);
 					window.location.href = "home.jsp";
 				}
 			})
-			.fail(function(data) {
+			.fail(function(data) { console.log(data);
 				if(data.responseText === 'server-error') {
 					alert('Atenção! Erro de servidor. Por favor, contate a administração.');
 					return;

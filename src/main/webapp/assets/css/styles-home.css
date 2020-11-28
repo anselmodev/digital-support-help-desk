@@ -375,6 +375,21 @@ body {
   display: none;
 }
 
+.tip-user {
+  position: absolute;
+  top: 5px;
+  left: 40px;
+  font-size: 11px;
+  font-style: italic;
+}
+.tip-user-new {
+  color: #A358BC;
+}
+
+.tip-user-edit {
+  color: #ff608a;
+  font-weight: bold;
+}
 
 /* FOOTER */
 .footer {

@@ -1,4 +1,4 @@
-package tickets;
+package users;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -17,8 +17,8 @@ import security.CookieSystem;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-@WebServlet(value = "/tickets-all")
-public class GetTickets extends HttpServlet {
+@WebServlet(value = "/users-listall")
+public class ListUsers extends HttpServlet {
 
     private String valueToStringOrEmpty(Map<String, ?> map, String key) {
         Object value = map.get(key);
@@ -34,7 +34,7 @@ public class GetTickets extends HttpServlet {
             CookieSystem ck = new CookieSystem();
             String checkLogin = ck.getCookie(req, "userNumber");
 
-            if(checkLogin == null) {
+            if (checkLogin == null) {
 
                 resp.getWriter().print("login-required");
 
@@ -50,49 +50,34 @@ public class GetTickets extends HttpServlet {
             Statement stmt = null;
             ResultSet resultSet = null;
 
-            String sql = "select * from tickets ORDER BY id DESC LIMIT 30";
+            String sql = "select id as userID, fullName as userName, email as userEmail from users ORDER BY id DESC LIMIT 30";
 
             stmt = conn.dbConn().createStatement();
             resultSet = stmt.executeQuery(sql);
 
             int countPending = 0, countFinished = 0;
 
-            JSONObject allTickets = new JSONObject();
+            JSONObject allUsers = new JSONObject();
             JSONObject resultTickets = new JSONObject();
-            JSONArray arrayTickets = new JSONArray();
+            JSONArray arrayUsers = new JSONArray();
 
 
             while (resultSet.next()) {
 
-                JSONObject ticketItem = new JSONObject();
+                JSONObject userItem = new JSONObject();
 
-                ticketItem.put("ticketID", resultSet.getInt("id"));
-                ticketItem.put("ticketNumber", resultSet.getInt("ticketNumber"));
-                ticketItem.put("ticketStatus", resultSet.getInt("status"));
-                ticketItem.put("ticketCustomerName", resultSet.getString("customerName"));
-                ticketItem.put("ticketUpdatedAt", resultSet.getString("updatedAt"));
-
-                // Count ticket Status
-                if(resultSet.getInt("status") == 1) {
-
-                    countPending++;
-
-                }
-
-                if(resultSet.getInt("status") == 2) {
-
-                    countFinished++;
-
-                }
+                userItem.put("userID", resultSet.getInt("userID"));
+                userItem.put("userName", resultSet.getString("userName"));
+                userItem.put("userEmail", resultSet.getString("userEmail"));
 
                 // add to JSON array
-                arrayTickets.add(ticketItem);
-                allTickets.put("resultTickets",arrayTickets);
+                arrayUsers.add(userItem);
+                allUsers.put("resultUsers", arrayUsers);
 
             }
 
             // NO RESULTS -----------------------------------------------
-            if(allTickets.size() == 0) {
+            if (allUsers.size() == 0) {
 
                 resp.getWriter().print("tickets-not-found");
 
@@ -104,13 +89,12 @@ public class GetTickets extends HttpServlet {
             // add count to Array results
             resultTickets.put("pending", countPending);
             resultTickets.put("finished", countFinished);
-            allTickets.put("resumeCount",resultTickets);
 
 
             HttpServletResponse hsr = (HttpServletResponse) resp;
             hsr.setContentType("application/json");
             hsr.setCharacterEncoding("UTF-8");
-            resp.getWriter().print(allTickets);
+            resp.getWriter().print(allUsers);
 
         } catch (Exception e) {
             System.out.println(e);
