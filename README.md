@@ -7,14 +7,15 @@
 
 ### Especificações do Servidor e Liguagem principal
 * Linguagem JAVA.
-* JRE 11.0.9
-* Servidor Tomcat 9.0.39
-* Banco de dados MYSQL 5.7.30 ou superior.
+* JRE 11.0.9 [download](https://adoptopenjdk.net/)
+* Servidor Tomcat 9.0.39 [download](https://tomcat.apache.org/download-90.cgi)
+* Banco de dados MYSQL 5.7.30 ou superior. (Opções de ambientes abaixo)
 * Módulos/Libs: "mysql-connector-java-8.0.21" e " json-simple-1.1.1"
 * URL LOCAL: http://localhost:8080/digital_support 
 
 ### Software para desenvolvimento
 * [Intellij IDEA](https://www.jetbrains.com/pt-br/idea/download)
+* [Configurar Tomcat no Intellij IDEA](https://www.jetbrains.com/help/idea/configuring-and-managing-application-server-integration.html?keymap=primary_windows)
 * [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
 * [POSTMAN - Para Teste de Rotas ](https://www.postman.com/downloads/)
 
@@ -28,12 +29,13 @@
 * Senha: aalmaster2717
 
 ## Configuração do Banco de Dados MYSQL
+* Arquivo de configurações: /src/main/java/database/ConnectionDb.java
 * Nome da Tabela: "digitalsupport"
 * Usuário: root (pode variar conforme o ambiente instalado na máquina)
 * Senha: root (pode variar conforme o ambiente instalado na máquina)
 
 #### Criação das tabelas no banco de dados
-* Schema do Banco (executar o SQL abaixo): 
+* Schema do Banco (copie e execute o SQL abaixo):
 ```mysql
 # ************************************************************
 # Sequel Pro SQL dump
