@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 
 public class ConnectionDb {
     // Parametro de conexão
+    private String  databaseName = "digitalsupport";
     private String	driver = "com.mysql.cj.jdbc.Driver";
-    private String	url = "jdbc:mysql://127.0.0.1:8889/digitalsupport?useTimezone=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
+    private String	url = "jdbc:mysql://127.0.0.1:8889/"+ databaseName +"?useTimezone=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
     private String	user = "root";
     private String	password = "root";
 
